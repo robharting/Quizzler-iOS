@@ -65,7 +65,7 @@ class ViewController: UIViewController {
         questionLabel.text = quiz[questionNumber].text
         self.trueButton.backgroundColor = UIColor.clear
         self.falseButton.backgroundColor = UIColor.clear
-        self.progressBar.progress = Float(questionNumber) / Float(quiz.count)
+        self.progressBar.progress = Float(questionNumber + 1) / Float(quiz.count)
                 
     }
     
