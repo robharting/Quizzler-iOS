@@ -10,7 +10,6 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var trueButton: UIButton!
@@ -33,24 +32,23 @@ class ViewController: UIViewController {
     ]
     
     var questionNumber = 0
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
         updateUI()
+        progressBar.progress = 0.0
     }
     
     
     @IBAction func actionButtonPressed(_ sender: UIButton) {
-        
         let userAnswer = sender.currentTitle!
         let actualQuestion = quiz[questionNumber]
         let actualAnswer = actualQuestion.answer
         if (userAnswer == actualAnswer) {
-            print("Right!")
+            sender.backgroundColor = UIColor.green
         } else {
-            print("Wrong!")
+            sender.backgroundColor = UIColor.red
         }
         
         if (questionNumber + 1  < quiz.count ) {
@@ -59,11 +57,16 @@ class ViewController: UIViewController {
             questionNumber = 0
         }
         
-        updateUI()
+        Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(updateUI), userInfo: nil, repeats: false)
+            
     }
     
-    func updateUI(){
+    @objc func updateUI(){
         questionLabel.text = quiz[questionNumber].text
+        self.trueButton.backgroundColor = UIColor.clear
+        self.falseButton.backgroundColor = UIColor.clear
+        self.progressBar.progress = Float(questionNumber) / Float(quiz.count)
+                
     }
     
     
