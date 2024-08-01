@@ -1,19 +1,14 @@
 //
-//  ViewController.swift
+//  quizBrain.swift
 //  Quizzler-iOS13
 //
-//  Created by Angela Yu on 12/07/2019.
-//  Copyright © 2019 The App Brewery. All rights reserved.
+//  Created by Harting, R.P.G. (Rob) on 30/07/2024.
+//  Copyright © 2024 The App Brewery. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-class ViewController: UIViewController {
-    
-    @IBOutlet weak var questionLabel: UILabel!
-    @IBOutlet weak var progressBar: UIProgressView!
-    @IBOutlet weak var trueButton: UIButton!
-    @IBOutlet weak var falseButton: UIButton!
+struct QuizBrain {
     
     let quiz = [
         Question(q: "A slug's blood is green.", a: "True"),
@@ -30,47 +25,46 @@ class ViewController: UIViewController {
         Question(q: "Chocolate affects a dog's heart and nervous system; a few ounces are enough to kill a small dog.", a: "True")
         
     ]
-    
+    // property - what is it like
     var questionNumber = 0
-        
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        updateUI()
-        progressBar.progress = 0.0
+    var score = 0
+    
+    // is called a method because it is in this struct instead of function - What it can do
+    mutating func checkAnswer(_ userAnswer: String) -> Bool {
+        if (userAnswer == quiz[questionNumber].answer) {
+            score += 1
+            return true
+        } else {
+            return false
+        }
     }
     
+    // is called a method because it is in this struct instead of function - What it can do
+    func getScore() -> Int {
+        return score
+    }
     
-    @IBAction func actionButtonPressed(_ sender: UIButton) {
-        let userAnswer = sender.currentTitle!
-        let actualQuestion = quiz[questionNumber]
-        let actualAnswer = actualQuestion.answer
-        if (userAnswer == actualAnswer) {
-            sender.backgroundColor = UIColor.green
-        } else {
-            sender.backgroundColor = UIColor.red
-        }
-        
+    // is called a method because it is in this struct instead of function - What it can do
+    func getQuestionText()-> String {
+        return quiz[questionNumber].text
+    }
+    
+    // is called a method because it is in this struct instead of function - What it can do
+    func getProgress() -> Float {
+        let progress = Float(questionNumber + 1) / Float(quiz.count)
+        return progress
+    }
+    
+    // is called a method because it is in this struct instead of function - What it can do
+    mutating func nextQuestion() {
         if (questionNumber + 1  < quiz.count ) {
             questionNumber += 1
         } else {
             questionNumber = 0
+            score = 0
         }
-        
-        Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(updateUI), userInfo: nil, repeats: false)
-            
     }
-    
-    @objc func updateUI(){
-        questionLabel.text = quiz[questionNumber].text
-        self.trueButton.backgroundColor = UIColor.clear
-        self.falseButton.backgroundColor = UIColor.clear
-        self.progressBar.progress = Float(questionNumber + 1) / Float(quiz.count)
-                
-    }
-    
     
     
     
 }
-
